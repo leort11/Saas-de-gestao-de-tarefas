@@ -1,29 +1,35 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AddTasks from "./components/AddTasks";
 import Tasks from "./components/Tasks";
+import {v4} from "uuid";
 
 function App() {
+  const [tasks, setTasks] = useState(
+    JSON.parse(localStorage.getItem("tasks")) || []
+  );
 
-  const [tasks, setTasks] = useState([
-  {
-    id: 1,
-    title: "Estudar programação",
-    description: "Estudar programação para ser um bom programador",
-    isCompleted: false,
-  }, 
-  {
-    id: 2,
-    title: "Estudar inglês",
-    description: "Estudar inglês para se tornar fluente.",
-    isCompleted: false,
-  }, 
-  {
-    id: 3,
-    title: "Estudar matemática",
-    description: "Estudar matemática para se tornar um desenvolvedor full stack.",
-    isCompleted: false,
-  }
-]);
+  useEffect(() => {
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+  }, [tasks]);
+
+  useEffect(() => {
+    const fetchTasks = async () => {
+      // CHAMAR A API
+      const response = await fetch(
+        "https://jsonplaceholder.typicode.com/todos?_limit=10", 
+        {
+          method: 'GET',
+        }
+    );
+    
+    // PEGAR OS DADOS QUE ELA RETORNA
+    const data = await response.json();
+
+    // ARMAZENAR/PERSISTIR ESSES DADOS NO STATE
+    setTasks(data);
+    };
+    fetchTasks();
+  }, []);
 
   function onTaskClick(taskId) {
     const newTasks = tasks.map(task => {
@@ -43,7 +49,7 @@ function App() {
 
   function onAddTaskSubmit (title, description) {
     const newTask = {
-      id: tasks.length + 1,
+      id: v4(),
       title,
       description,
       isCompleted: false,
