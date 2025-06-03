@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import AddTasks from "./components/AddTasks";
 import Tasks from "./components/Tasks";
 import {v4} from "uuid";
+import Title from "./components/Title";
+import Test from "./components/Test";
 
 function App() {
   const [tasks, setTasks] = useState(
@@ -14,7 +16,6 @@ function App() {
 
   useEffect(() => {
     const fetchTasks = async () => {
-      // CHAMAR A API
       const response = await fetch(
         "https://jsonplaceholder.typicode.com/todos?_limit=10", 
         {
@@ -22,13 +23,12 @@ function App() {
         }
     );
     
-    // PEGAR OS DADOS QUE ELA RETORNA
     const data = await response.json();
 
-    // ARMAZENAR/PERSISTIR ESSES DADOS NO STATE
     setTasks(data);
     };
-    fetchTasks();
+    // Se quiser usar a API, descomente a linha abaixo
+    // fetchTasks();
   }, []);
 
   function onTaskClick(taskId) {
@@ -60,7 +60,8 @@ function App() {
   return (
     <div className= "w-screen h-screen bg-slate-500 flex justify-center p-6">
       <div className="w-[500px] space-y-4">
-        <h1 className="text-3xl text-slate-100 font-bold text-center">Gerenciador de Tarefas</h1>
+        <Test />
+        <Title>Gerenciador de Tarefas</Title>
         <AddTasks 
           onAddTaskSubmit={onAddTaskSubmit} 
         />
