@@ -7,6 +7,11 @@ class Test extends React.Component {
             message: "hello, World!",
         }
     }
+
+    componentDidMount() {
+        console.log("É EXECUTADO QUANDO O USUÁRIO ACESSA PELA PRIMEIRA VEZ");
+    }
+    
     render()
  {
     return <h1>{this.state.message}</h1>
